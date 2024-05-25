@@ -39,8 +39,6 @@ function displayQuote() {
     document.getElementById('author').textContent = `- ${randomQuote.author}`;
 }
 
-// Add event listener to the button
-document.getElementById('new-quote').addEventListener('click', displayQuote);
 
-// Display a quote when the page loads
-displayQuote();
+
+
