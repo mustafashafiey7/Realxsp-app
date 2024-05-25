@@ -39,6 +39,3 @@ function displayQuote() {
     document.getElementById('author').textContent = `- ${randomQuote.author}`;
 }
 
-
-
-
