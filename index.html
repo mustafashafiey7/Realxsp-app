@@ -1,20 +1,27 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Quote of the Day</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmarker</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
     <div class="container">
-        <h1>Quote of the Day</h1>
-        <div class="quote-box">
-            <p id="quote">Click the button to get a new quote</p>
-            <p id="author"></p>
-        </div>
-        <button onclick="displayQuote()" id="new-quote">New Quote</button>
+        <h1>Bookmark Your Favorite Sites</h1>
+        <form id="bookmarkForm">
+            <div class="form-group">
+                <label for="siteName">Site Name</label>
+                <input type="text" id="siteName" placeholder="Enter Site Name" required>
+            </div>
+            <div class="form-group">
+                <label for="siteURL">Site URL</label>
+                <input type="url" id="siteURL" placeholder="Enter Site URL" required>
+            </div>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+        <div id="bookmarksResults"></div>
     </div>
     <script src="index.js"></script>
 </body>
-
 </html>

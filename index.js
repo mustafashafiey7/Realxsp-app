@@ -1,41 +1,71 @@
-// Array of quotes
-const quotes = [
-    {
-        quote: "To live is the rarest thing in the world. Most people exist, that is all.",
-        author: "Oscar Wilde"
-    },
-    {
-        quote: "I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.",
-        author: "Marilyn Monroe"
-    },
-    {
-        quote: "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.",
-        author: "Albert Einstein"
-    },
-    {
-        quote: "Be who you are and say what you feel, because those who mind don't matter, and those who matter don't mind.",
-        author: " Dr. Seuss"
-    },
-    {
-        quote: "In three words I can sum up everything I've learned about life: it goes on.",
-        author: " Robert Frost"
-    },
-    {
-        quote: "If you want to know what a man's like, take a good look at how he treats his inferiors, not his equals.",
-        author: "J.K. Rowling"
-    },
-    {
-        quote: "If you tell the truth, you don't have to remember anything.",
-        author: "Mark Twain"
+// scripts.js
+
+// Listen for form submit
+document.getElementById('bookmarkForm').addEventListener('submit', saveBookmark);
+
+function saveBookmark(e) {
+    // Get form values
+    var siteName = document.getElementById('siteName').value;
+    var siteURL = document.getElementById('siteURL').value;
+
+    // Create bookmark object
+    var bookmark = {
+        name: siteName,
+        url: siteURL
+    };
+
+    // Save to local storage
+    if(localStorage.getItem('bookmarks') === null) {
+        var bookmarks = [];
+        bookmarks.push(bookmark);
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    } else {
+        var bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+        bookmarks.push(bookmark);
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
     }
-];
 
-// Function to display a new quote
-function displayQuote() {
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    const randomQuote = quotes[randomIndex];
+    // Clear form
+    document.getElementById('bookmarkForm').reset();
 
-    document.getElementById('quote').textContent = `"${randomQuote.quote}"`;
-    document.getElementById('author').textContent = `- ${randomQuote.author}`;
+    // Fetch bookmarks
+    fetchBookmarks();
+
+    // Prevent form from submitting
+    e.preventDefault();
 }
 
+function deleteBookmark(url) {
+    var bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+    for(var i = 0; i < bookmarks.length; i++) {
+        if(bookmarks[i].url === url) {
+            bookmarks.splice(i, 1);
+        }
+    }
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+
+    // Fetch bookmarks
+    fetchBookmarks();
+}
+
+function fetchBookmarks() {
+    var bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+    var bookmarksResults = document.getElementById('bookmarksResults');
+
+    bookmarksResults.innerHTML = '';
+
+    for(var i = 0; i < bookmarks.length; i++) {
+        var name = bookmarks[i].name;
+        var url = bookmarks[i].url;
+
+        bookmarksResults.innerHTML += '<div class="bookmark">' +
+                                        '<h3>' + name +
+                                        ' <a class="btn" target="_blank" href="'+url+'">Visit</a> ' +
+                                        ' <a onclick="deleteBookmark(\''+url+'\')" class="btn" href="#">Delete</a> ' +
+                                        '</h3>' +
+                                      '</div>';
+    }
+}
+
+// Fetch bookmarks when page loads
+document.addEventListener('DOMContentLoaded', fetchBookmarks);
